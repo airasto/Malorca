@@ -1,0 +1,602 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Mallorca október 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: one-column travel app – header s odpočtom, sticky záložky, karty dní ako časová os */
+:root{
+  --bg:#eef3f2;          /* vápencová biela s nádychom mora */
+  --surface:#ffffff;
+  --ink:#0f2a33;
+  --muted:#557079;
+  --line:#d3e0df;
+  --sea:#0c6070;         /* hlboké more */
+  --sea-soft:#dcedee;
+  --mares:#b9802a;       /* pieskovec marès */
+  --mares-soft:#f5ead6;
+  --ok:#2f7d4a; --warn:#a0610b; --warn-soft:#fbefd9;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b1a1f; --surface:#12262d; --ink:#e4efee; --muted:#93acb1; --line:#23404a;
+  --sea:#5cc0cf; --sea-soft:#163a43; --mares:#e0ac55; --mares-soft:#352a17;
+  --ok:#6cc68a; --warn:#e9a84a; --warn-soft:#33270f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b1a1f; --surface:#12262d; --ink:#e4efee; --muted:#93acb1; --line:#23404a;
+  --sea:#5cc0cf; --sea-soft:#163a43; --mares:#e0ac55; --mares-soft:#352a17;
+  --ok:#6cc68a; --warn:#e9a84a; --warn-soft:#33270f; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:780px;margin:0 auto;padding-inline:16px;padding-block:0 48px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+a{color:var(--sea)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--mares);outline-offset:2px}
+
+/* Header */
+header.top{padding-block:28px 18px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+header.top h1{font-size:clamp(34px,7vw,52px);font-weight:700;letter-spacing:-.01em;margin-top:4px}
+header.top h1 span{color:var(--sea)}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:10px;color:var(--muted)}
+.count{margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;align-items:baseline}
+.count b{font-family:var(--display);font-size:28px;color:var(--mares);font-variant-numeric:tabular-nums}
+
+/* Tabs */
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px;border-bottom:1px solid var(--line);
+  display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 14px;cursor:pointer;font-weight:700;font-size:15px}
+nav.tabs button[aria-selected="true"]{background:var(--sea);border-color:var(--sea);color:var(--bg)}
+section.panel{padding-top:20px}
+section.panel > h2{font-size:26px;margin-bottom:6px}
+.lead{color:var(--muted);margin:0 0 18px;max-width:62ch}
+
+/* Day switcher */
+.days{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:18px}
+.days button{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 4px;cursor:pointer;text-align:center}
+.days button small{display:block;color:var(--muted);font-size:12px}
+.days button strong{font-family:var(--display);font-size:20px}
+.days button[aria-pressed="true"]{border-color:var(--sea);box-shadow:inset 0 0 0 2px var(--sea)}
+.days button.today::after{content:attr(data-today);display:block;font-size:11px;color:var(--mares);font-weight:700}
+
+.dayhead{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;align-items:baseline;margin-bottom:6px}
+.dayhead h3{font-size:24px}
+.chip{display:inline-block;font-size:13px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--sea-soft);color:var(--sea)}
+.chip.m{background:var(--mares-soft);color:var(--mares)}
+.daynote{color:var(--muted);margin:4px 0 16px;max-width:62ch}
+
+ol.tl{list-style:none;margin:0;padding:0;border-left:2px solid var(--line);margin-left:6px}
+ol.tl li{position:relative;padding:0 0 18px 20px}
+ol.tl li::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--sea)}
+ol.tl li.done::before{background:var(--sea)}
+ol.tl li.done .what{text-decoration:line-through;color:var(--muted)}
+.row{display:flex;gap:12px;align-items:flex-start}
+.time{font-variant-numeric:tabular-nums;font-weight:700;color:var(--sea);min-width:60px}
+.body{min-width:0;flex:1}
+.what{font-weight:700}
+.det{color:var(--muted);font-size:15px;margin-top:2px}
+.links{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px;font-size:14px}
+.tick{margin-left:auto;flex:0 0 auto;width:22px;height:22px;accent-color:var(--sea);cursor:pointer}
+.alert{background:var(--warn-soft);color:var(--ink);border-radius:var(--r);padding:12px 14px;margin:0 0 16px;border:1px solid var(--line)}
+.alert b{color:var(--warn)}
+.planb{border:1px dashed var(--line);border-radius:var(--r);padding:12px 14px;margin-top:4px}
+.planb b{color:var(--mares)}
+
+/* Stays */
+.stays{display:grid;gap:14px}
+.stay{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.stay.fav{border-color:var(--mares);box-shadow:0 0 0 2px var(--mares) inset}
+.stay h3{font-size:21px}
+.stay .sub{color:var(--muted);font-size:15px;margin-top:2px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:12px 0;font-size:15px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;font-weight:700;font-variant-numeric:tabular-nums}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:15px}
+.pc ul{margin:4px 0 0;padding-left:18px}
+.pc h4{margin:0;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--sea);color:var(--sea);background:transparent;border-radius:999px;padding:7px 14px;font-weight:700;font-size:14px;text-decoration:none;cursor:pointer}
+.btn.solid{background:var(--sea);color:var(--bg)}
+.btn.gold{border-color:var(--mares);color:var(--mares)}
+.btn.gold.solid{background:var(--mares);color:var(--bg)}
+.tablewrap{overflow-x:auto;margin-top:20px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+
+/* Lists */
+.group{margin-bottom:20px}
+.group h3{font-size:18px;margin-bottom:8px;display:flex;justify-content:space-between;gap:8px}
+.group h3 small{font-family:var(--body);font-weight:400;color:var(--muted);font-size:14px}
+.checks{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.checks li{border-bottom:1px solid var(--line)}
+.checks li:last-child{border-bottom:0}
+.checks label{display:flex;gap:12px;align-items:center;padding:10px 14px;cursor:pointer}
+.checks input{width:20px;height:20px;accent-color:var(--sea);flex:0 0 auto}
+.checks input:checked + span{text-decoration:line-through;color:var(--muted)}
+.progress{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin:4px 0 18px}
+.progress i{display:block;height:100%;background:var(--sea);width:0;transition:width .3s}
+.addrow{display:flex;gap:8px;margin-top:8px}
+.addrow input{flex:1;min-width:0;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 12px}
+
+/* Budget */
+.budget{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.brow{display:grid;grid-template-columns:1fr 120px;gap:10px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line)}
+.brow:last-child{border-bottom:0}
+.brow small{display:block;color:var(--muted);font-size:13px}
+.brow input{width:100%;text-align:right;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:6px 8px;font-variant-numeric:tabular-nums}
+.total{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px;margin-top:14px;padding:16px;border-radius:var(--r);background:var(--sea);color:var(--bg)}
+.total b{font-family:var(--display);font-size:32px;font-variant-numeric:tabular-nums}
+.inline-field{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.inline-field select,.inline-field input{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:7px 10px}
+
+/* Tips */
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.tip{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.tip h3{font-size:17px;margin-bottom:4px}
+.tip p{margin:0;font-size:15px;color:var(--muted)}
+.tip p b{color:var(--ink)}
+.copy{font-variant-numeric:tabular-nums}
+.foot{margin-top:28px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:12px}
+.flights{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:18px}
+.flights label{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--muted)}
+.flights input{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 10px;color:var(--ink)}
+
+@media (max-width:520px){
+  .pc{grid-template-columns:1fr}
+  .days strong{font-size:18px}
+  .brow{grid-template-columns:1fr 100px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<style>
+.toprow{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.lang{display:inline-flex;flex:0 0 auto;border:1px solid var(--line);border-radius:999px;background:var(--surface);padding:3px}
+.lang button{border:0;background:transparent;border-radius:999px;padding:5px 12px;font-weight:700;cursor:pointer;font-size:14px;color:var(--muted)}
+.lang button[aria-pressed="true"]{background:var(--sea);color:var(--bg)}
+.panel h3.sub3{font-size:19px;margin:8px 0 10px}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="toprow">
+      <div class="eyebrow" data-t="eyebrow"></div>
+      <div class="lang" role="group" aria-label="Jazyk / Nyelv">
+        <button type="button" data-lang="sk" aria-pressed="true">SK</button>
+        <button type="button" data-lang="hu" aria-pressed="false">HU</button>
+      </div>
+    </div>
+    <h1>Mallorca <span>11.–15. 10.</span></h1>
+    <div class="meta"><span data-t="route"></span><span data-t="base"></span><span data-t="nights"></span></div>
+    <div class="count" id="count"></div>
+  </header>
+
+  <nav class="tabs" role="tablist" id="tabsnav">
+    <button role="tab" data-tab="plan" aria-selected="true" id="t-plan" data-t="tab_plan"></button>
+    <button role="tab" data-tab="stay" aria-selected="false" id="t-stay" data-t="tab_stay"></button>
+    <button role="tab" data-tab="road" aria-selected="false" id="t-road" data-t="tab_road"></button>
+    <button role="tab" data-tab="pack" aria-selected="false" id="t-pack" data-t="tab_pack"></button>
+    <button role="tab" data-tab="money" aria-selected="false" id="t-money" data-t="tab_money"></button>
+    <button role="tab" data-tab="tips" aria-selected="false" id="t-tips" data-t="tab_tips"></button>
+  </nav>
+
+  <section class="panel" id="p-plan" role="tabpanel">
+    <h2 data-t="plan_h"></h2>
+    <p class="lead" data-t="plan_lead"></p>
+    <div class="days" id="days"></div>
+    <div id="day"></div>
+  </section>
+
+  <section class="panel" id="p-stay" role="tabpanel" hidden>
+    <h2 data-t="stay_h"></h2>
+    <p class="lead" data-t="stay_lead"></p>
+    <div class="stays" id="stays"></div>
+    <div class="tablewrap"><table id="staytable"></table></div>
+  </section>
+
+  <section class="panel" id="p-road" role="tabpanel" hidden>
+    <h2 data-t="road_h"></h2>
+    <p class="lead" data-t="road_lead"></p>
+    <div class="flights">
+      <label for="f-out"><span data-t="f_out"></span><input id="f-out" type="time" value="10:30"></label>
+      <label for="f-outno"><span data-t="f_outno"></span><input id="f-outno" type="text" placeholder="OS 123"></label>
+      <label for="f-back"><span data-t="f_back"></span><input id="f-back" type="time" value="19:30"></label>
+      <label for="f-backno"><span data-t="f_backno"></span><input id="f-backno" type="text" placeholder="OS 124"></label>
+    </div>
+    <div class="alert" id="roadwarn" hidden></div>
+    <h3 class="sub3" data-t="road_out_h"></h3>
+    <ol class="tl" id="road-out"></ol>
+    <h3 class="sub3" data-t="road_back_h"></h3>
+    <ol class="tl" id="road-back"></ol>
+  </section>
+
+  <section class="panel" id="p-pack" role="tabpanel" hidden>
+    <h2 data-t="pack_h"></h2>
+    <p class="lead" data-t="pack_lead"></p>
+    <div class="progress" aria-hidden="true"><i id="packbar"></i></div>
+    <div id="pack"></div>
+  </section>
+
+  <section class="panel" id="p-money" role="tabpanel" hidden>
+    <h2 data-t="money_h"></h2>
+    <p class="lead" data-t="money_lead"></p>
+    <div class="inline-field">
+      <label for="b-stay" data-t="b_stay"></label>
+      <select id="b-stay"></select>
+      <label for="b-night" data-t="b_night"></label>
+      <input id="b-night" type="number" min="0" step="5" style="width:90px">
+      <span style="color:var(--muted)" data-t="b_x4"></span>
+    </div>
+    <div class="budget" id="budget"></div>
+    <div class="total"><span data-t="b_total"></span><b id="btotal">0 €</b></div>
+  </section>
+
+  <section class="panel" id="p-tips" role="tabpanel" hidden>
+    <h2 data-t="tips_h"></h2>
+    <p class="lead" data-t="tips_lead"></p>
+    <div class="tips" id="tips"></div>
+  </section>
+
+  <p class="foot" data-t="foot"></p>
+</div>
+
+<script>
+(function(){
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem("mca26:"+k); return v===null ? d : JSON.parse(v);}catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem("mca26:"+k, JSON.stringify(v)); }catch(e){} }
+};
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const gm = q => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q);
+const nav = q => "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(q);
+
+let lang = store.get("lang", "sk");
+const L = v => Array.isArray(v) ? v[lang==="hu"?1:0] : v;
+
+/* ---------- UI texts ---------- */
+const T = {
+ eyebrow:["Rodinný výlet · 2 dospelí + 2 deti","Családi utazás · 2 felnőtt + 2 gyerek"],
+ route:["Trenčín → Viedeň (VIE) → Palma (PMI)","Trencsén → Bécs (VIE) → Palma (PMI)"],
+ base:["Základňa: sever ostrova","Szállás: a sziget északi része"],
+ nights:["4 noci","4 éjszaka"],
+ tab_plan:["Plán dní","Napi program"], tab_stay:["Ubytovanie","Szállás"], tab_road:["Cesta","Utazás"],
+ tab_pack:["Balenie","Csomagolás"], tab_money:["Rozpočet","Költségek"], tab_tips:["Užitočné","Hasznos"],
+ plan_h:["Plán na 5 dní","5 napos program"],
+ plan_lead:["Základňa na severe (Port de Pollença / Alcúdia) – do Tramuntany, na Formentor aj do Palmy je to do hodiny. Každý bod sa dá odškrtnúť, odkazy otvoria navigáciu v Google Maps.",
+            "A szállás északon van (Port de Pollença / Alcúdia) – a Tramuntana, a Formentor és Palma is egy órán belül elérhető. Minden pont kipipálható, a linkek Google Maps navigációt nyitnak."],
+ stay_h:["3 možnosti ubytovania","3 szállási lehetőség"],
+ stay_lead:["Všetky tri sú na severe ostrova, vhodné pre rodinu so 4 osobami a v rozpočte 150–300 € za noc. Ceny sú orientačné – pred rezerváciou ich overte na Bookingu pre konkrétny termín a vek detí. Hviezdičkou si označte favorita, premietne sa do rozpočtu.",
+            "Mindhárom a sziget északi részén van, 4 fős családnak megfelelő, 150–300 €/éj keretben. Az árak tájékoztató jellegűek – foglalás előtt ellenőrizzétek a Bookingon a pontos dátumra és a gyerekek korára. Csillaggal jelöljétek a kedvencet, ez bekerül a költségekbe."],
+ road_h:["Cesta tam a späť","Oda- és visszaút"],
+ road_lead:["Doplňte čísla a časy letov – uložia sa v tomto prehliadači a časy cesty sa podľa nich prepočítajú.",
+            "Írjátok be a járatszámokat és az indulási időket – ebben a böngészőben mentődnek, és az utazás időpontjai ehhez igazodnak."],
+ f_out:["Let tam (VIE → PMI), odlet","Odaút (VIE → PMI), indulás"],
+ f_outno:["Číslo letu tam","Járatszám oda"],
+ f_back:["Let späť (PMI → VIE), odlet","Visszaút (PMI → VIE), indulás"],
+ f_backno:["Číslo letu späť","Járatszám vissza"],
+ road_out_h:["Nedeľa 11. 10. – tam","Vasárnap, okt. 11. – oda"],
+ road_back_h:["Štvrtok 15. 10. – späť","Csütörtök, okt. 15. – vissza"],
+ pack_h:["Balenie","Csomagolás"],
+ pack_lead:["Október na Mallorce: cez deň zvyčajne 22–25 °C, more okolo 22–23 °C, večery chladnejšie. V horách fúka.",
+            "Október Mallorcán: napközben általában 22–25 °C, a tenger 22–23 °C körüli, az esték hűvösebbek. A hegyekben fúj a szél."],
+ money_h:["Rozpočet","Költségek"],
+ money_lead:["Predvyplnené sú odhady. Prepíšte ich skutočnými cenami, súčet sa prepočíta. Letenky nie sú zahrnuté.",
+             "Az előre kitöltött összegek becslések. Írjátok át a valós árakra, a végösszeg újraszámolódik. A repülőjegyek nincsenek benne."],
+ b_stay:["Ubytovanie:","Szállás:"], b_night:["€/noc","€/éj"], b_x4:["× 4 noci","× 4 éjszaka"],
+ b_total:["Spolu bez leteniek","Összesen repülőjegy nélkül"],
+ tips_h:["Užitočné na mieste","Hasznos tudnivalók"],
+ tips_lead:["Veci, ktoré ušetria čas alebo nervy.","Amik időt vagy idegeskedést spórolnak."],
+ foot:["Ceny vstupov a obmedzenia overené k 7. 10. 2026 z verejných zdrojov; ceny ubytovania sú odhady. Odškrtnuté položky a vaše údaje sa ukladajú len v tomto prehliadači.",
+       "A belépők árai és a korlátozások 2026. 10. 7-i állapot szerint, nyilvános forrásokból; a szállásárak becslések. A kipipált tételek és az adataitok csak ebben a böngészőben tárolódnak."],
+ // dynamic
+ cd_before:["Odchod z Trenčína o","Indulás Trencsénből"],
+ cd_d:["d","nap"], cd_h:["h","óra"], cd_m:["min","perc"],
+ cd_during:["Ste na Mallorke","Mallorcán vagytok"],
+ cd_during2:["Dnešný plán je otvorený nižšie.","A mai program lent látható."],
+ cd_after:["Výlet skončil. Dúfame, že bol skvelý.","Az utazás véget ért. Reméljük, nagyszerű volt."],
+ today:["dnes","ma"], day:["Deň","Nap"], planb:["Plán B:","B terv:"],
+ navigate:["Navigovať","Navigáció"], onmap:["Na mape","Térképen"],
+ done:["Hotovo:","Kész:"],
+ price:["Orient. cena","Becsült ár"], pernight:["€ / noc","€ / éj"], fournights:["4 noci","4 éjszaka"],
+ pros:["Plusy","Előnyök"], cons:["Mínusy","Hátrányok"],
+ booking:["Overiť cenu na Bookingu","Ár ellenőrzése a Bookingon"],
+ chosen:["★ Vybrané","★ Kiválasztva"], choose:["☆ Vybrať","☆ Kiválaszt"], fav:["Favorit","Kedvenc"],
+ add:["Pridať","Hozzáad"], addph:["Pridať položku…","Új tétel…"],
+ warn:["<b>Pozor:</b> pri tomto čase letu treba z Trenčína vyraziť už o {t}, nie o 6:00.","<b>Figyelem:</b> ennél az indulási időnél már {t}-kor el kell indulni Trencsénből, nem 6:00-kor."],
+ crit:["Kritérium","Szempont"]
+};
+const t = k => L(T[k]);
+const DOWS = { sk:["Ne","Po","Ut","St","Št"], hu:["V","H","K","Sze","Cs"] };
+
+/* ---------- Plan ---------- */
+const DAYS = [
+ { n:11, title:["Prílet a Alcúdia","Érkezés és Alcúdia"], chip:["Príchod","Érkezés"], gold:false,
+   note:["Dlhý deň s ranným odchodom – popoludnie bez programu navyše, nech sa deti zotavia.","Hosszú nap korai indulással – délután nincs extra program, hogy a gyerekek kipihenjék magukat."],
+   items:[
+    ["06:00",["Odchod z Trenčína","Indulás Trencsénből"],["D1 → Bratislava → Kittsee → A4, cca 170 km, 1 h 50 min. Podrobnosti v záložke Cesta.","D1 → Pozsony → Kittsee → A4, kb. 170 km, 1 óra 50 perc. Részletek az Utazás fülön."],null],
+    ["~12:30",["Prílet do Palmy, prevzatie auta","Érkezés Palmába, autóátvétel"],["Požičovne sú v hale príletov alebo shuttle busom. Prevzatie trvá 30–60 min.","Az autókölcsönzők az érkezési csarnokban vannak, vagy transzferbusszal érhetők el. Az átvétel 30–60 percig tart."],"Palma de Mallorca Airport"],
+    ["14:00",["Presun na sever + obed cestou","Út északra + ebéd útközben"],["Diaľnica Ma-13 smer Alcúdia, cca 60 km, 50 min. Obed napr. v Inca.","Ma-13 autópálya Alcúdia felé, kb. 60 km, 50 perc. Ebéd pl. Incában."],"Port de Pollença"],
+    ["15:30",["Check-in a bazén","Bejelentkezés és medence"],["Vybaliť, krátky oddych.","Kipakolás, rövid pihenő."],null],
+    ["17:30",["Staré mesto Alcúdia","Alcúdia óvárosa"],["Prechádzka po stredovekých hradbách (vstup voľný), úzke uličky, zmrzlina na Plaça de la Constitució.","Séta a középkori városfalakon (ingyenes), szűk utcák, fagyi a Plaça de la Constitució-n."],"Alcúdia Old Town walls"],
+    ["19:30",["Večera v Alcúdii alebo Porte","Vacsora Alcúdiában vagy Port de Pollençában"],"",null]
+   ],
+   planb:["Pri únave vynechať Alcúdiu a ostať pri bazéne – Alcúdia sa dá stihnúť v stredu večer.","Ha fáradtak vagytok, Alcúdia kimaradhat, maradjatok a medencénél – szerda este is belefér."]
+ },
+ { n:12, title:["Formentor a Cala Boquer","Formentor és Cala Boquer"], chip:["Príroda","Természet"], gold:false,
+   note:["12. 10. je v Španielsku štátny sviatok (Fiesta Nacional) – časť obchodov môže byť zatvorená, reštaurácie a prírodné miesta fungujú.","Október 12. Spanyolországban nemzeti ünnep (Fiesta Nacional) – egyes üzletek zárva lehetnek, az éttermek és a természeti helyszínek nyitva vannak."],
+   alert:["<b>Formentor:</b> do 18. 10. 2026 je cesta k majáku pre súkromné autá zatvorená od 10:00 do 22:00. Buď vyraziť autom tak, aby ste boli pri majáku pred 10:00, alebo ísť kyvadlovým autobusom z Port de Pollença (1,80 € kartou / 3 € v hotovosti jedna cesta).",
+          "<b>Formentor:</b> 2026. 10. 18-ig a világítótoronyhoz vezető út magánautók számára 10:00 és 22:00 között le van zárva. Vagy autóval úgy induljatok, hogy 10:00 előtt a toronynál legyetek, vagy menjetek a Port de Pollença-i ingabusszal (egy út 1,80 € kártyával / 3 € készpénzzel)."],
+   items:[
+    ["08:15",["Odchod na Formentor","Indulás Formentorra"],["Z Port de Pollença cca 25 min po serpentínach.","Port de Pollençából kb. 25 perc szerpentinen."],null],
+    ["08:30",["Mirador Es Colomer","Mirador Es Colomer"],["Najznámejšia vyhliadka na útesy. Ranné svetlo, ešte bez davov.","A legismertebb kilátó a sziklákra. Reggeli fény, még tömeg nélkül."],"Mirador Es Colomer"],
+    ["09:15",["Maják Cap de Formentor","Cap de Formentor világítótorony"],["Pozor na deti pri okraji útesov. Autom treba k majáku dôjsť pred 10:00.","Vigyázzatok a gyerekekre a szikla szélén. Autóval 10:00 előtt kell a toronyhoz érni."],"Cap de Formentor Lighthouse"],
+    ["10:00",["Platja de Formentor","Platja de Formentor"],["Pláž pod borovicami, plytká voda. Parkovisko je platené.","Strand fenyők alatt, sekély víz. A parkoló fizetős."],"Platja de Formentor"],
+    ["13:00",["Obed v Port de Pollença","Ebéd Port de Pollençában"],"",null],
+    ["15:30",["Túra Cala Boquer","Túra: Cala Boquer"],["Ľahká túra údolím k zátoke, cca 3 km jedným smerom, 45–60 min. Vhodná aj pre menšie deti. Pevná obuv, voda.","Könnyű túra a völgyön át az öbölig, kb. 3 km egy irányba, 45–60 perc. Kisebb gyerekeknek is jó. Zárt cipő, víz."],"Vall de Boquer"],
+    ["19:00",["Pollença – schody Calvari","Pollença – Calvari lépcső"],["365 kamenných schodov ku kaplnke s výhľadom. Večera na Plaça Major.","365 kőlépcső a kilátós kápolnához. Vacsora a Plaça Majoron."],"Calvari Pollença"]
+   ],
+   planb:["Pri daždi: Palma Aquarium (cca 1 h autom) alebo Lluc kláštor a múzeum.","Eső esetén: Palma Aquarium (kb. 1 óra autóval) vagy a Lluc kolostor és múzeum."]
+ },
+ { n:13, title:["Tramuntana: Sa Calobra a Sóller","Tramuntana: Sa Calobra és Sóller"], chip:["Najkrajšia cesta","A legszebb út"], gold:false,
+   note:["Celodenný okruh autom cez pohorie Serra de Tramuntana (UNESCO). Serpentíny – deťom vopred dať niečo proti nevoľnosti.","Egész napos körút autóval a Serra de Tramuntana hegységen át (UNESCO). Szerpentinek – a gyerekeknek előre adjatok valamit hányinger ellen."],
+   items:[
+    ["08:30",["Odchod po Ma-10","Indulás a Ma-10-en"],["Smer Lluc, cesta horami s výhľadmi.","Lluc felé, hegyi út szép kilátással."],null],
+    ["09:15",["Kláštor Lluc","Lluc kolostor"],["Krátka zastávka, botanická záhrada, toalety.","Rövid megálló, botanikus kert, mosdó."],"Santuari de Lluc"],
+    ["10:15",["Serpentína do Sa Calobra","Szerpentin Sa Calobrába"],["Známy „uzol“ Nus de sa Corbata. Ísť pomaly, v zákrutách stoja autobusy.","A híres „nyakkendőcsomó“, a Nus de sa Corbata. Lassan, a kanyarokban buszok állhatnak."],"Sa Calobra"],
+    ["11:00",["Torrent de Pareis","Torrent de Pareis"],["Z parkoviska 15 min pešo cez tunely v skale ku kaňonu a kamienkovej pláži. Platené parkovisko.","A parkolóból 15 perc gyalog sziklaalagutakon át a kanyonhoz és a kavicsos strandhoz. Fizetős parkoló."],"Torrent de Pareis"],
+    ["13:30",["Presun do Sóller + obed","Út Sóllerbe + ebéd"],["Ma-10 cez Gorg Blau, cca 1 h.","Ma-10 a Gorg Blau mellett, kb. 1 óra."],"Sóller"],
+    ["15:30",["Historická električka do Port de Sóller","Történelmi villamos Port de Sóllerbe"],["Drevená električka cez pomarančové sady, cca 20 min. Jazdí z centra Sóller.","Fa villamos narancsligeteken át, kb. 20 perc. Sóller központjából indul."],"Tranvía de Sóller"],
+    ["16:15",["Port de Sóller","Port de Sóller"],["Promenáda, kúpanie v zálive, západ slnka.","Sétány, fürdés az öbölben, naplemente."],"Port de Sóller"],
+    ["19:00",["Návrat cez tunel","Vissza az alagúton át"],["Tunel Sóller (bez mýta) → Palma → Ma-13, cca 1 h 10 min.","Sóller-alagút (díjmentes) → Palma → Ma-13, kb. 1 óra 10 perc."],null]
+   ],
+   planb:["Ak deti serpentíny nezvládajú: vynechať Sa Calobra, ísť priamo do Sóller cez Inca a tunel a urobiť loďku z Port de Sóller do Sa Calobra.","Ha a gyerekek nem bírják a szerpentint: Sa Calobra kimarad, Incán és az alagúton át egyenesen Sóllerbe, onnan hajóval Port de Sóllerből Sa Calobrába."]
+ },
+ { n:14, title:["Jaskyne Drach a východ","Drach-barlangok és a keleti part"], chip:["Rezervovať vstup","Jegyet foglalni"], gold:true,
+   note:["Jaskyne majú vstupy v pevných časoch – lístky kúpte online vopred (ušetríte 1 € na osobu a máte istý čas).","A barlangba fix időpontokban lehet belépni – a jegyet vegyétek meg előre online (fejenként 1 € olcsóbb, és biztos az időpont)."],
+   items:[
+    ["09:15",["Odchod do Porto Cristo","Indulás Porto Cristóba"],["Cca 55 km, 1 h.","Kb. 55 km, 1 óra."],null],
+    ["11:00",["Coves del Drach","Coves del Drach"],["Prehliadka 90 min: podzemné jazero Martel, živý koncert klasickej hudby, voliteľná plavba loďkou. Vstupné 18,50 € dospelý / 11,50 € dieťa 3–12 (online). Vstupy v októbri: 10, 11, 12, 14, 15, 16, 17 h.","90 perces látogatás: a föld alatti Martel-tó, élő komolyzenei koncert, választható csónakázás. Belépő 18,50 € felnőtt / 11,50 € gyerek 3–12 év (online). Októberi belépési időpontok: 10, 11, 12, 14, 15, 16, 17 óra."],"Coves del Drach"],
+    ["13:00",["Obed v Porto Cristo","Ebéd Porto Cristóban"],["Reštaurácie pri prístave.","Éttermek a kikötőnél."],"Porto Cristo"],
+    ["15:00",["Hrad Capdepera","Capdepera vára"],["Stredoveké hradby s výhľadom na more, deti ho obľubujú.","Középkori várfalak tengerre néző kilátással, a gyerekek imádják."],"Castell de Capdepera"],
+    ["16:30",["Cala Agulla alebo Cala Mesquida","Cala Agulla vagy Cala Mesquida"],["Široké piesočné pláže s dunami.","Széles homokos strandok dűnékkel."],"Cala Agulla"],
+    ["18:30",["Návrat, večer Alcúdia","Vissza, este Alcúdia"],["Ak bola v nedeľu vynechaná.","Ha vasárnap kimaradt."],null]
+   ],
+   planb:["Jaskyne fungujú aj pri daždi – deň sa dá vymeniť s pondelkom alebo utorkom.","A barlang esőben is nyitva van – ez a nap felcserélhető a hétfővel vagy a keddel."]
+ },
+ { n:15, title:["Palma a odlet","Palma és hazautazás"], chip:["Odlet","Indulás haza"], gold:true,
+   note:["Check-out ráno, batožina v aute. Program prispôsobte času spätného letu – na letisku buďte 2 h pred odletom, auto vráťte ešte o 30 min skôr.","Reggel kijelentkezés, csomagok az autóban. A programot igazítsátok a visszaút időpontjához – 2 órával indulás előtt legyetek a reptéren, az autót még 30 perccel korábban adjátok le."],
+   items:[
+    ["09:00",["Check-out, presun do Palmy","Kijelentkezés, út Palmába"],["Cca 60 km, 50 min. Parkovanie napr. Parc de la Mar pod katedrálou.","Kb. 60 km, 50 perc. Parkolás pl. a Parc de la Marnál, a katedrális alatt."],"Parking Parc de la Mar Palma"],
+    ["10:00",["Katedrála La Seu","La Seu katedrális"],["Gotická katedrála s prvkami od Gaudího. Po–Pi 10:00–17:15, vstupné cca 10 €. Zakryté plecia a kolená.","Gótikus katedrális Gaudí-elemekkel. H–P 10:00–17:15, belépő kb. 10 €. Takart váll és térd."],"Catedral de Mallorca"],
+    ["11:30",["Staré mesto a Palau de l'Almudaina","Óváros és a Palau de l'Almudaina"],["Uličky štvrte Sa Calatrava, Passeig des Born.","Sa Calatrava negyed utcái, Passeig des Born."],"Palau de l'Almudaina"],
+    ["13:00",["Obed","Ebéd"],["Napr. trh Mercat de l'Olivar – čerstvé jedlo, rýchlo.","Pl. a Mercat de l'Olivar piac – friss étel, gyorsan."],"Mercat de l'Olivar"],
+    ["14:30",["Hrad Bellver","Bellver vára"],["Kruhový hrad nad mestom s výhľadom na celý záliv. Na kopec sa dá vyjsť autom.","Kerek alaprajzú vár a város felett, kilátással az egész öbölre. Autóval is fel lehet menni."],"Castell de Bellver"],
+    ["16:30",["Vrátiť auto, letisko","Autó leadása, reptér"],["Natankovať plnú nádrž pred vrátením (podľa podmienok požičovne).","Leadás előtt tele tankolni (a kölcsönző feltételei szerint)."],"Palma de Mallorca Airport"]
+   ],
+   planb:["Pri skorom lete: len katedrála a nábrežie, Bellver vynechať.","Korai járat esetén: csak a katedrális és a part, Bellver kimarad."]
+ }
+];
+const done = store.get("done", {});
+let cur = store.get("day", 0);
+const DEP = new Date("2026-10-11T06:00:00+02:00");
+const END = new Date("2026-10-15T23:59:00+02:00");
+const now = new Date();
+if (now >= DEP && now <= END){ const i = DAYS.findIndex(x=>x.n===now.getDate()); if(i>=0) cur = i; }
+
+function countdown(){
+  const n = new Date(), el = $("#count");
+  if (n < DEP){
+    const ms = DEP - n, d = Math.floor(ms/864e5), h = Math.floor(ms%864e5/36e5), m = Math.floor(ms%36e5/6e4);
+    el.innerHTML = `<span>${t("cd_before")}</span><b>${d} ${t("cd_d")} ${h} ${t("cd_h")} ${m} ${t("cd_m")}</b>`;
+  } else if (n <= END){
+    el.innerHTML = `<b>${t("cd_during")}</b><span>${t("cd_during2")}</span>`;
+  } else el.innerHTML = `<span>${t("cd_after")}</span>`;
+}
+
+function renderDays(){
+  $("#days").innerHTML = DAYS.map((x,i)=>{
+    const isToday = now.getFullYear()===2026 && now.getMonth()===9 && now.getDate()===x.n;
+    return `<button type="button" aria-pressed="${i===cur}" data-i="${i}" class="${isToday?'today':''}" data-today="${t('today')}"><small>${DOWS[lang][i]}</small><strong>${x.n}.</strong></button>`;
+  }).join("");
+  const x = DAYS[cur];
+  $("#day").innerHTML = `
+    <div class="dayhead"><h3>${lang==="hu"?(cur+1)+". nap":"Deň "+(cur+1)} · ${esc(L(x.title))}</h3><span class="chip ${x.gold?'m':''}">${esc(L(x.chip))}</span></div>
+    <p class="daynote">${esc(L(x.note))}</p>
+    ${x.alert?`<div class="alert">${L(x.alert)}</div>`:""}
+    <ol class="tl">${x.items.map((it,j)=>{
+      const k = cur+"-"+j, on = !!done[k], det = L(it[2]);
+      return `<li class="${on?'done':''}"><div class="row"><span class="time">${esc(it[0])}</span><div class="body"><div class="what">${esc(L(it[1]))}</div>${det?`<div class="det">${esc(det)}</div>`:""}${it[3]?`<div class="links"><a href="${nav(it[3])}" target="_blank" rel="noopener">${t("navigate")}</a><a href="${gm(it[3])}" target="_blank" rel="noopener">${t("onmap")}</a></div>`:""}</div><input class="tick" type="checkbox" id="d${k}" data-k="${k}" ${on?'checked':''} aria-label="${esc(t('done')+' '+L(it[1]))}"></div></li>`;
+    }).join("")}</ol>
+    <div class="planb"><b>${t("planb")}</b> ${esc(L(x.planb))}</div>`;
+}
+$("#days").addEventListener("click", e=>{ const b = e.target.closest("button"); if(!b) return; cur = +b.dataset.i; store.set("day", cur); renderDays(); });
+$("#day").addEventListener("change", e=>{ const k = e.target.dataset.k; if(!k) return; done[k] = e.target.checked; store.set("done", done); e.target.closest("li").classList.toggle("done", e.target.checked); });
+
+/* ---------- Stays ---------- */
+const bk = name => "https://www.booking.com/searchresults.html?ss=" + encodeURIComponent(name) + "&checkin=2026-10-11&checkout=2026-10-15&group_adults=2&group_children=2&no_rooms=1";
+const STAYS = [
+ { id:"azul", name:"Puerto Azul Suite Hotel", place:"Port de Pollença", type:["Suite hotel s raňajkami","Lakosztályhotel reggelivel"], price:[180,280],
+   pros:[["~100 m od pláže","~100 m a strandtól"],["3 vonkajšie bazény, kids club","3 kültéri medence, gyerekklub"],["suity s terasou, raňajky v cene","teraszos lakosztályok, a reggeli benne van az árban"],["pešo do centra Portu","gyalog a kikötő központjába"]],
+   cons:[["bez kuchynky – večere vonku","nincs konyha – vacsora étteremben"],["koniec sezóny: overiť, či má v termíne otvorené","szezon vége: ellenőrizni, nyitva van-e a dátumban"]],
+   map:"Puerto Azul Suite Hotel Port de Pollença", rec:["Odporúčam – najlepšia poloha pre Formentor, Boquer aj Tramuntanu.","Ajánlott – a legjobb kiindulópont Formentorhoz, Boquerhez és a Tramuntanához."] },
+ { id:"eix", name:"Eix Lagotel Holiday Resort", place:"Playa de Muro", type:["Resort s apartmánmi","Apartmanos üdülőkomplexum"], price:[150,240],
+   pros:[["apartmány až pre 5 osôb s kuchynkou","apartmanok max. 5 főre, konyhával"],["3 bazény vrátane splash parku","3 medence, köztük vízi játszótér"],["kids club","gyerekklub"],["dlhá piesočná pláž cez cestu","hosszú homokos strand az út túloldalán"]],
+   cons:[["resortový charakter, do mestečka autom","üdülőtelep jelleg, a városkába autóval"],["o 15 min ďalej od Formentoru","15 perccel messzebb Formentortól"]],
+   map:"Eix Lagotel Holiday Resort Playa de Muro", rec:["Keď sú prioritou bazény a deti.","Ha a medencék és a gyerekek az elsők."] },
+ { id:"villa", name:"Hoposa VillaConcha", place:"Port de Pollença", type:["Apartmány","Apartmanok"], price:[140,220],
+   pros:[["apartmán pre 4 s kuchynkou","4 fős apartman konyhával"],["~200 m od pláže","~200 m a strandtól"],["splash park pre deti","vízi játszótér gyerekeknek"],["možnosť raňajok na izbe","reggeli a szobába kérhető"]],
+   cons:[["menej bazénov a vybavenia ako veľké resorty","kevesebb medence és szolgáltatás, mint a nagy resortokban"],["menšie izby","kisebb szobák"]],
+   map:"Hoposa Villaconcha Port de Pollença", rec:["Najlepší pomer cena / poloha.","A legjobb ár–elhelyezkedés arány."] }
+];
+const TABLE = [
+ [["Typ","Típus"],["Suite hotel","Lakosztályhotel"],["Resort s apartmánmi","Apartmanos resort"],["Apartmány","Apartmanok"]],
+ [["Kuchynka","Konyha"],["nie","nincs"],["áno","van"],["áno","van"]],
+ [["Pláž","Strand"],["~100 m","~100 m"],["cez cestu (Playa de Muro)","az út túloldalán (Playa de Muro)"],["~200 m","~200 m"]],
+ [["Pre deti","Gyerekeknek"],["3 bazény, kids club","3 medence, gyerekklub"],["3 bazény, splash park, kids club","3 medence, vízi játszótér, gyerekklub"],["splash park, aktivity","vízi játszótér, programok"]],
+ [["Orient. cena / noc","Becsült ár / éj"],["180–280 €","180–280 €"],["150–240 €","150–240 €"],["140–220 €","140–220 €"]],
+ [["Najlepšie pre","Kinek ideális"],["komfort, raňajky v cene","kényelem, reggelivel"],["deti a bazény","gyerekek és medencék"],["cena a pešo do mestečka","ár és gyalog a városkába"]]
+];
+let fav = store.get("fav", "azul");
+function renderStays(){
+  $("#stays").innerHTML = STAYS.map(s=>`
+   <article class="stay ${fav===s.id?'fav':''}">
+     <div class="dayhead"><h3>${esc(s.name)}</h3>${fav===s.id?`<span class="chip m">${t("fav")}</span>`:''}</div>
+     <div class="sub">${esc(s.place)} · ${esc(L(s.type))}</div>
+     <dl class="kv"><dt>${t("price")}</dt><dd>${s.price[0]}–${s.price[1]} ${t("pernight")}</dd><dt>${t("fournights")}</dt><dd>${s.price[0]*4}–${s.price[1]*4} €</dd></dl>
+     <div class="pc"><div><h4>${t("pros")}</h4><ul>${s.pros.map(p=>`<li>${esc(L(p))}</li>`).join("")}</ul></div><div><h4>${t("cons")}</h4><ul>${s.cons.map(p=>`<li>${esc(L(p))}</li>`).join("")}</ul></div></div>
+     <p style="margin:12px 0 0;font-size:15px"><b>${esc(L(s.rec))}</b></p>
+     <div class="actions">
+       <a class="btn solid" href="${bk(s.name)}" target="_blank" rel="noopener">${t("booking")}</a>
+       <a class="btn" href="${gm(s.map)}" target="_blank" rel="noopener">${t("onmap")}</a>
+       <button type="button" class="btn gold ${fav===s.id?'solid':''}" data-fav="${s.id}">${fav===s.id?t("chosen"):t("choose")}</button>
+     </div>
+   </article>`).join("");
+  $("#staytable").innerHTML = `<thead><tr><th>${t("crit")}</th><th>Puerto Azul</th><th>Eix Lagotel</th><th>VillaConcha</th></tr></thead><tbody>${TABLE.map(r=>`<tr>${r.map(c=>`<td>${esc(L(c))}</td>`).join("")}</tr>`).join("")}</tbody>`;
+}
+$("#stays").addEventListener("click", e=>{ const b = e.target.closest("[data-fav]"); if(!b) return; fav = b.dataset.fav; store.set("fav", fav); renderStays(); syncBudgetStay(true); });
+
+/* ---------- Road ---------- */
+const fields = ["f-out","f-outno","f-back","f-backno"];
+fields.forEach(id=>{ const v = store.get(id, null); if(v!==null) document.getElementById(id).value = v; });
+const toMin = s => { const [h,m] = (s||"0:0").split(":").map(Number); return h*60+m; };
+const fmt = m => { m = ((m%1440)+1440)%1440; return String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0"); };
+function renderRoad(){
+  const out = toMin($("#f-out").value), back = toMin($("#f-back").value);
+  const atAirport = out - 120, leave = atAirport - 125;
+  const outNo = $("#f-outno").value.trim(), backNo = $("#f-backno").value.trim();
+  const steps = [
+    [fmt(leave),["Odchod z Trenčína","Indulás Trencsénből"],["D1 Trenčín → Bratislava, cez Petržalku na A6 (Kittsee) a A4 k letisku. Cca 170 km, 1 h 50 min + rezerva 15 min. Rakúska diaľničná známka je potrebná (digitálna alebo nálepka).","D1 Trencsén → Pozsony, Ligetfalun át az A6-ra (Kittsee), majd A4 a reptérig. Kb. 170 km, 1 óra 50 perc + 15 perc tartalék. Osztrák autópálya-matrica szükséges (digitális vagy ragasztós)."],"Flughafen Wien-Schwechat"],
+    [fmt(atAirport-15),["Parkovanie pri letisku","Parkolás a reptéren"],["Parkovanie rezervovať online vopred – je lacnejšie ako na mieste.","A parkolást foglaljátok előre online – olcsóbb, mint a helyszínen."],"Flughafen Wien Parken"],
+    [fmt(atAirport),["Letisko Viedeň, check-in a bezpečnostná kontrola","Bécsi reptér, check-in és biztonsági ellenőrzés"],["2 h pred odletom. Doklady pre deti: vlastný platný OP alebo pas.","2 órával indulás előtt. A gyerekeknek saját érvényes személyi igazolvány vagy útlevél kell."],null],
+    [fmt(out),[ "Odlet do Palmy"+(outNo?" · "+outNo:""), "Indulás Palmába"+(outNo?" · "+outNo:"") ],["Let trvá cca 2 h 25 min.","A repülés kb. 2 óra 25 perc."],null],
+    [fmt(out+145),["Pristátie v Palme","Leszállás Palmában"],"",null],
+    [fmt(out+200),["Auto prevzaté, odchod na sever","Autó átvéve, indulás északra"],["Kontrola auta pred odchodom (fotky škrabancov), detské sedačky.","Indulás előtt nézzétek át az autót (fotók a karcolásokról), gyerekülések."],null]
+  ];
+  const backSteps = [
+    [fmt(back-150),["Vrátenie auta na letisku PMI","Autó leadása a PMI reptéren"],["Plná nádrž podľa podmienok, fotky stavu auta.","Tele tank a feltételek szerint, fotók az autó állapotáról."],"Palma de Mallorca Airport"],
+    [fmt(back-120),["Check-in a bezpečnostná kontrola","Check-in és biztonsági ellenőrzés"],"",null],
+    [fmt(back),["Odlet do Viedne"+(backNo?" · "+backNo:""),"Indulás Bécsbe"+(backNo?" · "+backNo:"")],"",null],
+    [fmt(back+150),["Pristátie vo Viedni","Leszállás Bécsben"],"",null],
+    [fmt(back+190),["Odchod z parkoviska","Indulás a parkolóból"],"",null],
+    [fmt(back+305),["Doma v Trenčíne","Otthon, Trencsénben"],"",null]
+  ];
+  const li = s => { const det = L(s[2]); return `<li><div class="row"><span class="time">${s[0]}</span><div class="body"><div class="what">${esc(L(s[1]))}</div>${det?`<div class="det">${esc(det)}</div>`:""}${s[3]?`<div class="links"><a href="${nav(s[3])}" target="_blank" rel="noopener">${t("navigate")}</a></div>`:""}</div></div></li>`; };
+  $("#road-out").innerHTML = steps.map(li).join("");
+  $("#road-back").innerHTML = backSteps.map(li).join("");
+  const w = $("#roadwarn");
+  if (leave < toMin("06:00")){ w.hidden = false; w.innerHTML = t("warn").replace("{t}", fmt(leave)); } else w.hidden = true;
+}
+fields.forEach(id=>document.getElementById(id).addEventListener("input", e=>{ store.set(id, e.target.value); renderRoad(); }));
+
+/* ---------- Packing ---------- */
+const PACK = [
+ [["Doklady a peniaze","Iratok és pénz"],[["OP / pasy pre všetkých 4 (aj deti)","Személyi / útlevél mind a 4 főnek (a gyerekeknek is)"],["Európske preukazy poistenca (EHIC)","Európai egészségbiztosítási kártyák (EHIC)"],["Cestovné poistenie","Utasbiztosítás"],["Vodičský preukaz + kreditná karta na meno vodiča (kaucia za auto)","Jogosítvány + hitelkártya a sofőr nevére (kaució az autóra)"],["Potvrdenia: letenky, ubytovanie, auto, parkovanie","Visszaigazolások: repjegy, szállás, autó, parkolás"],["Lístky Coves del Drach (online)","Coves del Drach jegyek (online)"],["Rakúska diaľničná známka","Osztrák autópálya-matrica"]]],
+ [["Oblečenie","Ruházat"],[["Plavky 2× na osobu","Fürdőruha fejenként 2 db"],["Ľahká bunda / mikina na večer","Könnyű dzseki / pulóver estére"],["Pevná obuv na Boquer a Torrent de Pareis","Zárt cipő Boquerhez és a Torrent de Pareishez"],["Sandále / obuv do vody (kamienkové pláže)","Szandál / vízicipő (kavicsos strandok)"],["Oblečenie so zakrytými plecami a kolenami (katedrála)","Vállat és térdet takaró ruha (katedrális)"],["Pokrývky hlavy","Sapka, kalap"]]],
+ [["Deti","Gyerekek"],[["Tabletky / náramky proti nevoľnosti (serpentíny)","Hányinger elleni tabletta / karszalag (szerpentinek)"],["Detské sedačky – alebo objednať k autu","Gyerekülések – vagy rendelni az autóhoz"],["Tablet, slúchadlá, hry na let","Tablet, fejhallgató, játékok a repülésre"],["Desiata a pitie na ranný presun","Uzsonna és innivaló a reggeli útra"],["Plávacie rukávniky / okuliare","Karúszó / úszószemüveg"]]],
+ [["Lekárnička a hygiena","Elsősegély és tisztálkodás"],[["Opaľovací krém SPF 50 + po opaľovaní","Naptej SPF 50 + napozás utáni krém"],["Lieky na horúčku a bolesť (aj detské)","Láz- és fájdalomcsillapító (gyerekeknek is)"],["Náplasti, dezinfekcia","Sebtapasz, fertőtlenítő"],["Repelent","Szúnyogriasztó"],["Osobné lieky","Saját gyógyszerek"]]],
+ [["Technika","Technika"],[["Nabíjačky + powerbanka","Töltők + powerbank"],["Držiak mobilu do auta","Autós telefontartó"],["Offline mapa Mallorky v Google Maps","Offline Mallorca-térkép a Google Mapsben"],["Fotoaparát","Fényképezőgép"]]],
+ [["Pred odchodom","Indulás előtt"],[["Online check-in na lety","Online check-in a járatokra"],["Skontrolovať tlak v pneumatikách auta na cestu do Viedne","Guminyomás ellenőrzése a bécsi útra"],["Vyniesť smeti, zalievanie kvetov","Szemét kivitele, virágöntözés"],["Stiahnuť offline mapy","Offline térképek letöltése"]]]
+];
+const packed = store.get("packed", {});
+const extra = store.get("extra2", {});
+function renderPack(){
+  let total = 0, n = 0;
+  $("#pack").innerHTML = PACK.map((g,gi)=>{
+    const items = g[1].map(L).concat(extra[gi]||[]);
+    const c = items.filter((_,i)=>packed[gi+"-"+i]).length; total += items.length; n += c;
+    return `<div class="group"><h3>${esc(L(g[0]))} <small>${c}/${items.length}</small></h3>
+      <ul class="checks">${items.map((it,i)=>{const k=gi+"-"+i;return `<li><label for="pk${k}"><input type="checkbox" id="pk${k}" data-pk="${k}" ${packed[k]?'checked':''}><span>${esc(it)}</span></label></li>`;}).join("")}</ul>
+      <form class="addrow" data-g="${gi}"><input id="add${gi}" type="text" placeholder="${t('addph')}" aria-label="${esc(t('addph'))}"><button class="btn" type="submit">${t("add")}</button></form></div>`;
+  }).join("");
+  $("#packbar").style.width = (total? n/total*100 : 0) + "%";
+}
+$("#pack").addEventListener("change", e=>{ const k = e.target.dataset.pk; if(!k) return; packed[k] = e.target.checked; store.set("packed", packed); renderPack(); });
+$("#pack").addEventListener("submit", e=>{ e.preventDefault(); const f = e.target, g = f.dataset.g, v = f.querySelector("input").value.trim(); if(!v) return; (extra[g] = extra[g]||[]).push(v); store.set("extra2", extra); renderPack(); });
+
+/* ---------- Budget ---------- */
+const BUD = [
+ ["car",["Prenájom auta 5 dní","Autóbérlés 5 napra"],["s plným poistením, odhad","teljes biztosítással, becslés"],230],
+ ["seats",["Detské sedačky 2×","Gyerekülés 2 db"],["ak ich nemáte vlastné","ha nincs saját"],60],
+ ["fuel",["Palivo na Mallorke","Üzemanyag Mallorcán"],["cca 450 km","kb. 450 km"],60],
+ ["home",["Palivo + diaľnica Trenčín – Viedeň a späť","Üzemanyag + autópálya Trencsén – Bécs oda-vissza"],["vrátane rakúskej známky","osztrák matricával együtt"],70],
+ ["park",["Parkovanie pri letisku Viedeň","Parkolás a bécsi reptéren"],["5 dní, rezervované online","5 nap, online foglalva"],90],
+ ["drach",["Coves del Drach","Coves del Drach"],["2 × 18,50 € + 2 × 11,50 €","2 × 18,50 € + 2 × 11,50 €"],60],
+ ["seu",["Katedrála La Seu","La Seu katedrális"],["2 dospelí, deti podľa veku","2 felnőtt, gyerekek kor szerint"],25],
+ ["tram",["Električka Sóller – Port a späť","Villamos Sóller – Port oda-vissza"],["4 osoby","4 fő"],40],
+ ["parking",["Parkovanie na výletoch","Parkolás a kirándulásokon"],["Formentor, Sa Calobra, Palma","Formentor, Sa Calobra, Palma"],40],
+ ["food",["Jedlo a pitie","Étel és ital"],["5 dní × cca 130 € pre 4 osoby","5 nap × kb. 130 € 4 főre"],650],
+ ["misc",["Rezerva","Tartalék"],["zmrzlina, suveníry, nečakané","fagyi, ajándékok, váratlan kiadások"],100]
+];
+const bv = store.get("budget", {});
+function syncBudgetStay(fromFav){
+  const sel = $("#b-stay");
+  sel.value = fromFav ? fav : store.get("bstay", fav);
+  const s = STAYS.find(x=>x.id===sel.value) || STAYS[0];
+  const saved = store.get("bnight_"+s.id, null);
+  $("#b-night").value = saved!==null ? saved : Math.round((s.price[0]+s.price[1])/2/5)*5;
+  calc();
+}
+function renderBudget(){
+  const keep = {}; BUD.forEach(b=>{ const el = document.getElementById("b-"+b[0]); if(el) keep[b[0]] = el.value; });
+  $("#b-stay").innerHTML = STAYS.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join("");
+  $("#budget").innerHTML = BUD.map(b=>{ const v = keep[b[0]]!==undefined ? keep[b[0]] : (bv[b[0]]!==undefined?bv[b[0]]:b[3]);
+    return `<div class="brow"><label for="b-${b[0]}">${esc(L(b[1]))}<small>${esc(L(b[2]))}</small></label><input id="b-${b[0]}" type="number" min="0" step="5" data-b="${b[0]}" value="${esc(v)}"></div>`; }).join("");
+}
+function calc(){
+  let s = (+$("#b-night").value||0)*4;
+  BUD.forEach(b=>{ s += +document.getElementById("b-"+b[0]).value || 0; });
+  $("#btotal").textContent = s.toLocaleString(lang==="hu"?"hu-HU":"sk-SK") + " €";
+}
+$("#budget").addEventListener("input", e=>{ const k = e.target.dataset.b; if(!k) return; bv[k] = e.target.value; store.set("budget", bv); calc(); });
+$("#b-stay").addEventListener("change", e=>{ store.set("bstay", e.target.value); fav = e.target.value; store.set("fav", fav); renderStays(); syncBudgetStay(true); });
+$("#b-night").addEventListener("input", e=>{ store.set("bnight_"+$("#b-stay").value, e.target.value); calc(); });
+
+/* ---------- Tips ---------- */
+const TIPS = [
+ [["Tiesňová linka","Segélyhívó szám"],["<b class='copy'>112</b> – funguje v celej EÚ, hovoria aj po anglicky.","<b class='copy'>112</b> – az egész EU-ban működik, angolul is beszélnek."]],
+ [["Formentor do 18. 10.","Formentor okt. 18-ig"],["Súkromné autá k majáku len pred 10:00 alebo po 22:00. Inak kyvadlový bus z Port de Pollença.","Magánautóval a világítótoronyhoz csak 10:00 előtt vagy 22:00 után. Egyébként ingabusz Port de Pollençából."]],
+ [["Auto","Autó"],["Pri prevzatí nafotiť auto zo všetkých strán. Pravidlo paliva „full to full“ je najvýhodnejšie. Kaucia sa blokuje na kreditnej karte vodiča.","Átvételkor fotózzátok le az autót minden oldalról. A „full to full“ tankolási szabály a legkedvezőbb. A kauciót a sofőr hitelkártyáján zárolják."]],
+ [["Serpentíny","Szerpentinek"],["Ma-10 a cesta do Sa Calobra sú úzke a kľukaté, chodia nimi autobusy a cyklisti. Deťom dať lieky proti nevoľnosti 30 min pred jazdou.","A Ma-10 és a Sa Calobrába vezető út keskeny és kanyargós, buszok és kerékpárosok is járnak rajta. A gyerekeknek 30 perccel indulás előtt adjatok hányinger elleni szert."]],
+ [["Obedy a večere","Ebéd és vacsora"],["Španieli obedujú 13:00–15:30, večerajú od 20:00. S deťmi pomôže „menú del día“ cez obed – lacnejšie a rýchle.","A spanyolok 13:00–15:30 között ebédelnek, 20:00-tól vacsoráznak. Gyerekekkel jó választás délben a „menú del día“ – olcsóbb és gyors."]],
+ [["Pitná voda","Ivóvíz"],["Voda z vodovodu je bezpečná, ale chuťovo slabšia – väčšina ľudí kupuje balenú (5 l bandasky v supermarkete).","A csapvíz biztonságos, de az íze gyengébb – a legtöbben palackozottat vesznek (5 literes kanna a szupermarketben)."]],
+ [["Slnko v októbri","Napsütés októberben"],["Stále silné UV. Krém aj na krátke výlety, hlavne pre deti na lodi a pri vode.","Az UV-sugárzás még erős. Naptej rövid kirándulásra is, főleg a gyerekeknek hajón és víz mellett."]],
+ [["Sviatok 12. 10.","Ünnepnap: okt. 12."],["Fiesta Nacional de España – niektoré obchody zatvorené. Nákup urobiť v nedeľu večer alebo v utorok.","Fiesta Nacional de España – egyes üzletek zárva. A bevásárlást vasárnap este vagy kedden intézzétek."]],
+ [["Aplikácie","Alkalmazások"],["Google Maps (offline mapa), Booking, aplikácia požičovne áut, TIB – autobusy na Mallorke.","Google Maps (offline térkép), Booking, az autókölcsönző appja, TIB – mallorcai buszok."]]
+];
+function renderTips(){ $("#tips").innerHTML = TIPS.map(x=>`<div class="tip"><h3>${esc(L(x[0]))}</h3><p>${L(x[1])}</p></div>`).join(""); }
+
+/* ---------- Tabs ---------- */
+const tabs = document.querySelectorAll("nav.tabs button");
+function show(id){
+  tabs.forEach(b=>b.setAttribute("aria-selected", b.dataset.tab===id));
+  document.querySelectorAll("section.panel").forEach(p=>p.hidden = p.id!=="p-"+id);
+  store.set("tab", id);
+}
+tabs.forEach(b=>b.addEventListener("click", ()=>{ show(b.dataset.tab); window.scrollTo({top:0}); }));
+
+/* ---------- Language ---------- */
+function applyLang(){
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-t]").forEach(el=>{ el.textContent = t(el.dataset.t); });
+  document.querySelectorAll(".lang button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.lang===lang));
+  $("#tabsnav").setAttribute("aria-label", lang==="hu"?"Szakaszok":"Sekcie");
+  countdown(); renderDays(); renderStays(); renderRoad(); renderPack(); renderBudget(); syncBudgetStay(false); renderTips();
+}
+document.querySelectorAll(".lang button").forEach(b=>b.addEventListener("click", ()=>{ lang = b.dataset.lang; store.set("lang", lang); applyLang(); }));
+
+applyLang();
+setInterval(countdown, 30000);
+const h = (location.hash||"").slice(1);
+if (h==="hu" || h==="sk"){ lang = h; applyLang(); }
+show(["plan","stay","road","pack","money","tips"].includes(h) ? h : store.get("tab","plan"));
+})();
+</script>
+
+</body></html>
