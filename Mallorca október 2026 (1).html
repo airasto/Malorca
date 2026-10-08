@@ -1,0 +1,525 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Mallorca október 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: one-column travel app – header s odpočtom, sticky záložky, karty dní ako časová os */
+:root{
+  --bg:#eef3f2;          /* vápencová biela s nádychom mora */
+  --surface:#ffffff;
+  --ink:#0f2a33;
+  --muted:#557079;
+  --line:#d3e0df;
+  --sea:#0c6070;         /* hlboké more */
+  --sea-soft:#dcedee;
+  --mares:#b9802a;       /* pieskovec marès */
+  --mares-soft:#f5ead6;
+  --ok:#2f7d4a; --warn:#a0610b; --warn-soft:#fbefd9;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b1a1f; --surface:#12262d; --ink:#e4efee; --muted:#93acb1; --line:#23404a;
+  --sea:#5cc0cf; --sea-soft:#163a43; --mares:#e0ac55; --mares-soft:#352a17;
+  --ok:#6cc68a; --warn:#e9a84a; --warn-soft:#33270f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b1a1f; --surface:#12262d; --ink:#e4efee; --muted:#93acb1; --line:#23404a;
+  --sea:#5cc0cf; --sea-soft:#163a43; --mares:#e0ac55; --mares-soft:#352a17;
+  --ok:#6cc68a; --warn:#e9a84a; --warn-soft:#33270f; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:780px;margin:0 auto;padding-inline:16px;padding-block:0 48px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+a{color:var(--sea)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--mares);outline-offset:2px}
+
+/* Header */
+header.top{padding-block:28px 18px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+header.top h1{font-size:clamp(34px,7vw,52px);font-weight:700;letter-spacing:-.01em;margin-top:4px}
+header.top h1 span{color:var(--sea)}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:10px;color:var(--muted)}
+.count{margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;align-items:baseline}
+.count b{font-family:var(--display);font-size:28px;color:var(--mares);font-variant-numeric:tabular-nums}
+
+/* Tabs */
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px;border-bottom:1px solid var(--line);
+  display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 14px;cursor:pointer;font-weight:700;font-size:15px}
+nav.tabs button[aria-selected="true"]{background:var(--sea);border-color:var(--sea);color:var(--bg)}
+section.panel{padding-top:20px}
+section.panel > h2{font-size:26px;margin-bottom:6px}
+.lead{color:var(--muted);margin:0 0 18px;max-width:62ch}
+
+/* Day switcher */
+.days{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:18px}
+.days button{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 4px;cursor:pointer;text-align:center}
+.days button small{display:block;color:var(--muted);font-size:12px}
+.days button strong{font-family:var(--display);font-size:20px}
+.days button[aria-pressed="true"]{border-color:var(--sea);box-shadow:inset 0 0 0 2px var(--sea)}
+.days button.today::after{content:"dnes";display:block;font-size:11px;color:var(--mares);font-weight:700}
+
+.dayhead{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;align-items:baseline;margin-bottom:6px}
+.dayhead h3{font-size:24px}
+.chip{display:inline-block;font-size:13px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--sea-soft);color:var(--sea)}
+.chip.m{background:var(--mares-soft);color:var(--mares)}
+.daynote{color:var(--muted);margin:4px 0 16px;max-width:62ch}
+
+ol.tl{list-style:none;margin:0;padding:0;border-left:2px solid var(--line);margin-left:6px}
+ol.tl li{position:relative;padding:0 0 18px 20px}
+ol.tl li::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--sea)}
+ol.tl li.done::before{background:var(--sea)}
+ol.tl li.done .what{text-decoration:line-through;color:var(--muted)}
+.row{display:flex;gap:12px;align-items:flex-start}
+.time{font-variant-numeric:tabular-nums;font-weight:700;color:var(--sea);min-width:60px}
+.body{min-width:0;flex:1}
+.what{font-weight:700}
+.det{color:var(--muted);font-size:15px;margin-top:2px}
+.links{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px;font-size:14px}
+.tick{margin-left:auto;flex:0 0 auto;width:22px;height:22px;accent-color:var(--sea);cursor:pointer}
+.alert{background:var(--warn-soft);color:var(--ink);border-radius:var(--r);padding:12px 14px;margin:0 0 16px;border:1px solid var(--line)}
+.alert b{color:var(--warn)}
+.planb{border:1px dashed var(--line);border-radius:var(--r);padding:12px 14px;margin-top:4px}
+.planb b{color:var(--mares)}
+
+/* Stays */
+.stays{display:grid;gap:14px}
+.stay{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.stay.fav{border-color:var(--mares);box-shadow:0 0 0 2px var(--mares) inset}
+.stay h3{font-size:21px}
+.stay .sub{color:var(--muted);font-size:15px;margin-top:2px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:12px 0;font-size:15px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;font-weight:700;font-variant-numeric:tabular-nums}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:15px}
+.pc ul{margin:4px 0 0;padding-left:18px}
+.pc h4{margin:0;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--sea);color:var(--sea);background:transparent;border-radius:999px;padding:7px 14px;font-weight:700;font-size:14px;text-decoration:none;cursor:pointer}
+.btn.solid{background:var(--sea);color:var(--bg)}
+.btn.gold{border-color:var(--mares);color:var(--mares)}
+.btn.gold.solid{background:var(--mares);color:var(--bg)}
+.tablewrap{overflow-x:auto;margin-top:20px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+
+/* Lists */
+.group{margin-bottom:20px}
+.group h3{font-size:18px;margin-bottom:8px;display:flex;justify-content:space-between;gap:8px}
+.group h3 small{font-family:var(--body);font-weight:400;color:var(--muted);font-size:14px}
+.checks{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.checks li{border-bottom:1px solid var(--line)}
+.checks li:last-child{border-bottom:0}
+.checks label{display:flex;gap:12px;align-items:center;padding:10px 14px;cursor:pointer}
+.checks input{width:20px;height:20px;accent-color:var(--sea);flex:0 0 auto}
+.checks input:checked + span{text-decoration:line-through;color:var(--muted)}
+.progress{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin:4px 0 18px}
+.progress i{display:block;height:100%;background:var(--sea);width:0;transition:width .3s}
+.addrow{display:flex;gap:8px;margin-top:8px}
+.addrow input{flex:1;min-width:0;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 12px}
+
+/* Budget */
+.budget{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.brow{display:grid;grid-template-columns:1fr 120px;gap:10px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line)}
+.brow:last-child{border-bottom:0}
+.brow small{display:block;color:var(--muted);font-size:13px}
+.brow input{width:100%;text-align:right;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:6px 8px;font-variant-numeric:tabular-nums}
+.total{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px;margin-top:14px;padding:16px;border-radius:var(--r);background:var(--sea);color:var(--bg)}
+.total b{font-family:var(--display);font-size:32px;font-variant-numeric:tabular-nums}
+.inline-field{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.inline-field select,.inline-field input{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:7px 10px}
+
+/* Tips */
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.tip{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.tip h3{font-size:17px;margin-bottom:4px}
+.tip p{margin:0;font-size:15px;color:var(--muted)}
+.tip p b{color:var(--ink)}
+.copy{font-variant-numeric:tabular-nums}
+.foot{margin-top:28px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:12px}
+.flights{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:18px}
+.flights label{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--muted)}
+.flights input{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 10px;color:var(--ink)}
+
+@media (max-width:520px){
+  .pc{grid-template-columns:1fr}
+  .days strong{font-size:18px}
+  .brow{grid-template-columns:1fr 100px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Rodinný výlet · 2 dospelí + 2 deti</div>
+    <h1>Mallorca <span>11.–15. 10.</span></h1>
+    <div class="meta"><span>Trenčín → Viedeň (VIE) → Palma (PMI)</span><span>Základňa: sever ostrova</span><span>4 noci</span></div>
+    <div class="count" id="count"></div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Sekcie">
+    <button role="tab" data-tab="plan" aria-selected="true" id="t-plan">Plán dní</button>
+    <button role="tab" data-tab="stay" aria-selected="false" id="t-stay">Ubytovanie</button>
+    <button role="tab" data-tab="road" aria-selected="false" id="t-road">Cesta</button>
+    <button role="tab" data-tab="pack" aria-selected="false" id="t-pack">Balenie</button>
+    <button role="tab" data-tab="money" aria-selected="false" id="t-money">Rozpočet</button>
+    <button role="tab" data-tab="tips" aria-selected="false" id="t-tips">Užitočné</button>
+  </nav>
+
+  <!-- PLAN -->
+  <section class="panel" id="p-plan" role="tabpanel">
+    <h2>Plán na 5 dní</h2>
+    <p class="lead">Základňa na severe (Port de Pollença / Alcúdia) – do Tramuntany, na Formentor aj do Palmy je to do hodiny. Každý bod sa dá odškrtnúť, odkazy otvoria navigáciu v Google Maps.</p>
+    <div class="days" id="days"></div>
+    <div id="day"></div>
+  </section>
+
+  <!-- STAYS -->
+  <section class="panel" id="p-stay" role="tabpanel" hidden>
+    <h2>3 možnosti ubytovania</h2>
+    <p class="lead">Všetky tri sú na severe ostrova, vhodné pre rodinu so 4 osobami a v rozpočte 150–300 € za noc. Ceny sú orientačné – pred rezerváciou ich overte na Bookingu pre konkrétny termín a vek detí. Hviezdičkou si označte favorita, premietne sa do rozpočtu.</p>
+    <div class="stays" id="stays"></div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Kritérium</th><th>Puerto Azul</th><th>Eix Lagotel</th><th>VillaConcha</th></tr></thead>
+        <tbody>
+          <tr><td>Typ</td><td>Suite hotel</td><td>Resort s apartmánmi</td><td>Apartmány</td></tr>
+          <tr><td>Kuchynka</td><td>nie</td><td>áno</td><td>áno</td></tr>
+          <tr><td>Pláž</td><td>~100 m</td><td>cez cestu (Playa de Muro)</td><td>~200 m</td></tr>
+          <tr><td>Pre deti</td><td>3 bazény, kids club</td><td>3 bazény, splash park, kids club</td><td>splash park, aktivity</td></tr>
+          <tr><td>Orient. cena / noc</td><td>180–280 €</td><td>150–240 €</td><td>140–220 €</td></tr>
+          <tr><td>Najlepšie pre</td><td>komfort, raňajky v cene</td><td>deti a bazény</td><td>cena a pešo do mestečka</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ROAD -->
+  <section class="panel" id="p-road" role="tabpanel" hidden>
+    <h2>Cesta tam a späť</h2>
+    <p class="lead">Doplňte čísla a časy letov – uložia sa v tomto prehliadači a časy cesty sa podľa nich prepočítajú.</p>
+    <div class="flights">
+      <label for="f-out">Let tam (VIE → PMI), odlet<input id="f-out" type="time" value="10:30"></label>
+      <label for="f-outno">Číslo letu tam<input id="f-outno" type="text" placeholder="napr. OS 123"></label>
+      <label for="f-back">Let späť (PMI → VIE), odlet<input id="f-back" type="time" value="19:30"></label>
+      <label for="f-backno">Číslo letu späť<input id="f-backno" type="text" placeholder="napr. OS 124"></label>
+    </div>
+    <div class="alert" id="roadwarn" hidden></div>
+    <h3 style="font-size:19px;margin-bottom:10px">Nedeľa 11. 10. – tam</h3>
+    <ol class="tl" id="road-out"></ol>
+    <h3 style="font-size:19px;margin:8px 0 10px">Štvrtok 15. 10. – späť</h3>
+    <ol class="tl" id="road-back"></ol>
+  </section>
+
+  <!-- PACK -->
+  <section class="panel" id="p-pack" role="tabpanel" hidden>
+    <h2>Balenie</h2>
+    <p class="lead">Október na Mallorce: cez deň zvyčajne 22–25 °C, more okolo 22–23 °C, večery chladnejšie. V horách fúka.</p>
+    <div class="progress" aria-hidden="true"><i id="packbar"></i></div>
+    <div id="pack"></div>
+  </section>
+
+  <!-- MONEY -->
+  <section class="panel" id="p-money" role="tabpanel" hidden>
+    <h2>Rozpočet</h2>
+    <p class="lead">Predvyplnené sú odhady. Prepíšte ich skutočnými cenami, súčet sa prepočíta. Letenky nie sú zahrnuté.</p>
+    <div class="inline-field">
+      <label for="b-stay">Ubytovanie:</label>
+      <select id="b-stay"></select>
+      <label for="b-night">€/noc</label>
+      <input id="b-night" type="number" min="0" step="5" style="width:90px">
+      <span style="color:var(--muted)">× 4 noci</span>
+    </div>
+    <div class="budget" id="budget"></div>
+    <div class="total"><span>Spolu bez leteniek</span><b id="btotal">0 €</b></div>
+  </section>
+
+  <!-- TIPS -->
+  <section class="panel" id="p-tips" role="tabpanel" hidden>
+    <h2>Užitočné na mieste</h2>
+    <p class="lead">Veci, ktoré ušetria čas alebo nervy.</p>
+    <div class="tips" id="tips"></div>
+  </section>
+
+  <p class="foot">Ceny vstupov a obmedzenia overené k 7. 10. 2026 z verejných zdrojov; ceny ubytovania sú odhady. Odškrtnuté položky a vaše údaje sa ukladajú len v tomto prehliadači.</p>
+</div>
+
+<script>
+(function(){
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem("mca26:"+k); return v===null ? d : JSON.parse(v);}catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem("mca26:"+k, JSON.stringify(v)); }catch(e){} }
+};
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const gm = q => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q);
+const nav = q => "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(q);
+
+/* ---------- Countdown ---------- */
+const DEP = new Date("2026-10-11T06:00:00+02:00");
+const END = new Date("2026-10-15T23:59:00+02:00");
+function countdown(){
+  const now = new Date(), el = $("#count");
+  if (now < DEP){
+    const ms = DEP - now, d = Math.floor(ms/864e5), h = Math.floor(ms%864e5/36e5), m = Math.floor(ms%36e5/6e4);
+    el.innerHTML = `<span>Odchod z Trenčína o</span><b>${d} d ${h} h ${m} min</b>`;
+  } else if (now <= END){
+    el.innerHTML = `<b>Ste na Mallorke</b><span>Dnešný plán je otvorený nižšie.</span>`;
+  } else {
+    el.innerHTML = `<span>Výlet skončil. Dúfame, že bol skvelý.</span>`;
+  }
+}
+countdown(); setInterval(countdown, 30000);
+
+/* ---------- Plan ---------- */
+const DAYS = [
+ { d:"Ne", n:11, title:"Prílet a Alcúdia", chip:"Príchod", note:"Dlhý deň s ranným odchodom – popoludnie bez programu navyše, nech sa deti zotavia.",
+   items:[
+    ["06:00","Odchod z Trenčína","D1 → Bratislava → Kittsee → A4, cca 170 km, 1 h 50 min. Podrobnosti v záložke Cesta.",null],
+    ["~12:30","Prílet do Palmy, prevzatie auta","Požičovne sú v hale príletov alebo shuttle busom. Prevzatie trvá 30–60 min.","Palma de Mallorca Airport"],
+    ["14:00","Presun na sever + obed cestou","Diaľnica Ma-13 smer Alcúdia, cca 60 km, 50 min. Obed napr. v Inca.","Port de Pollença"],
+    ["15:30","Check-in a bazén","Vybaliť, krátky oddych.",null],
+    ["17:30","Staré mesto Alcúdia","Prechádzka po stredovekých hradbách (vstup voľný), úzke uličky, zmrzlina na Plaça de la Constitució.","Alcúdia Old Town walls"],
+    ["19:30","Večera v Alcúdii alebo Porte","",null]
+   ],
+   planb:"Pri únave vynechať Alcúdiu a ostať pri bazéne – Alcúdia sa dá stihnúť v stredu večer."
+ },
+ { d:"Po", n:12, title:"Formentor a Cala Boquer", chip:"Príroda", note:"12. 10. je v Španielsku štátny sviatok (Fiesta Nacional) – časť obchodov môže byť zatvorená, reštaurácie a prírodné miesta fungujú.",
+   alert:"<b>Formentor:</b> do 18. 10. 2026 je cesta k majáku pre súkromné autá zatvorená od 10:00 do 22:00. Buď vyraziť autom tak, aby ste boli pri majáku pred 10:00, alebo ísť kyvadlovým autobusom z Port de Pollença (1,80 € kartou / 3 € v hotovosti jedna cesta).",
+   items:[
+    ["08:15","Odchod na Formentor","Z Port de Pollença cca 25 min po serpentínach.",null],
+    ["08:30","Mirador Es Colomer","Najznámejšia vyhliadka na útesy. Ranné svetlo, ešte bez davov.","Mirador Es Colomer"],
+    ["09:15","Maják Cap de Formentor","Pozor na deti pri okraji útesov. Autom treba k majáku dôjsť pred 10:00.","Cap de Formentor Lighthouse"],
+    ["10:00","Platja de Formentor","Pláž pod borovicami, plytká voda. Parkovisko je platené.","Platja de Formentor"],
+    ["13:00","Obed v Port de Pollença","",null],
+    ["15:30","Túra Cala Boquer","Ľahká túra údolím k zátoke, cca 3 km jedným smerom, 45–60 min. Vhodná aj pre menšie deti. Pevná obuv, voda.","Vall de Boquer"],
+    ["19:00","Pollença – schody Calvari","365 kamenných schodov ku kaplnke s výhľadom. Večera na Plaça Major.","Calvari Pollença"]
+   ],
+   planb:"Pri daždi: Palma Aquarium (cca 1 h autom) alebo Lluc kláštor a múzeum."
+ },
+ { d:"Ut", n:13, title:"Tramuntana: Sa Calobra a Sóller", chip:"Najkrajšia cesta", note:"Celodenný okruh autom cez pohorie Serra de Tramuntana (UNESCO). Serpentíny – deťom vopred dať niečo proti nevoľnosti.",
+   items:[
+    ["08:30","Odchod po Ma-10","Smer Lluc, cesta horami s výhľadmi.",null],
+    ["09:15","Kláštor Lluc","Krátka zastávka, botanická záhrada, toalety.","Santuari de Lluc"],
+    ["10:15","Serpentína do Sa Calobra","Známy „uzol“ Nus de sa Corbata. Ísť pomaly, v zákrutách stoja autobusy.","Sa Calobra"],
+    ["11:00","Torrent de Pareis","Z parkoviska 15 min pešo cez tunely v skale ku kaňonu a kamienkovej pláži. Platené parkovisko.","Torrent de Pareis"],
+    ["13:30","Presun do Sóller + obed","Ma-10 cez Gorg Blau, cca 1 h.","Sóller"],
+    ["15:30","Historická električka do Port de Sóller","Drevená električka cez pomarančové sady, cca 20 min. Jazdí z centra Sóller.","Tranvía de Sóller"],
+    ["16:15","Port de Sóller","Promenáda, kúpanie v zálive, západ slnka.","Port de Sóller"],
+    ["19:00","Návrat cez tunel","Tunel Sóller (bez mýta) → Palma → Ma-13, cca 1 h 10 min.",null]
+   ],
+   planb:"Ak deti serpentíny nezvládajú: vynechať Sa Calobra, ísť priamo do Sóller cez Inca a tunel a urobiť loďku z Port de Sóller do Sa Calobra."
+ },
+ { d:"St", n:14, title:"Jaskyne Drach a východ", chip:"Rezervovať vstup", note:"Jaskyne majú vstupy v pevných časoch – lístky kúpte online vopred (ušetríte 1 € na osobu a máte istý čas).",
+   items:[
+    ["09:15","Odchod do Porto Cristo","Cca 55 km, 1 h.",null],
+    ["11:00","Coves del Drach","Prehliadka 90 min: podzemné jazero Martel, živý koncert klasickej hudby, voliteľná plavba loďkou. Vstupné 18,50 € dospelý / 11,50 € dieťa 3–12 (online). Vstupy v októbri: 10, 11, 12, 14, 15, 16, 17 h.","Coves del Drach"],
+    ["13:00","Obed v Porto Cristo","Reštaurácie pri prístave.","Porto Cristo"],
+    ["15:00","Hrad Capdepera","Stredoveké hradby s výhľadom na more, deti ho obľubujú.","Castell de Capdepera"],
+    ["16:30","Cala Agulla alebo Cala Mesquida","Široké piesočné pláže s dunami.","Cala Agulla"],
+    ["18:30","Návrat, večer Alcúdia","Ak bola v nedeľu vynechaná.",null]
+   ],
+   planb:"Jaskyne fungujú aj pri daždi – deň sa dá vymeniť s pondelkom alebo utorkom."
+ },
+ { d:"Št", n:15, title:"Palma a odlet", chip:"Odlet", note:"Check-out ráno, batožina v aute. Program prispôsobte času spätného letu – na letisku buďte 2 h pred odletom, auto vráťte ešte o 30 min skôr.",
+   items:[
+    ["09:00","Check-out, presun do Palmy","Cca 60 km, 50 min. Parkovanie napr. Parc de la Mar pod katedrálou.","Parking Parc de la Mar Palma"],
+    ["10:00","Katedrála La Seu","Gotická katedrála s prvkami od Gaudího. Po–Pi 10:00–17:15, vstupné cca 10 €. Zakryté plecia a kolená.","Catedral de Mallorca"],
+    ["11:30","Staré mesto a Palau de l'Almudaina","Uličky štvrte Sa Calatrava, Passeig des Born.","Palau de l'Almudaina"],
+    ["13:00","Obed","Napr. trh Mercat de l'Olivar – čerstvé jedlo, rýchlo.","Mercat de l'Olivar"],
+    ["14:30","Hrad Bellver","Kruhový hrad nad mestom s výhľadom na celý záliv. Na kopec sa dá vyjsť autom.","Castell de Bellver"],
+    ["16:30","Vrátiť auto, letisko","Natankovať plnú nádrž pred vrátením (podľa podmienok požičovne).","Palma de Mallorca Airport"]
+   ],
+   planb:"Pri skorom lete: len katedrála a nábrežie, Bellver vynechať."
+ }
+];
+const done = store.get("done", {});
+let cur = store.get("day", 0);
+const now = new Date();
+if (now >= DEP && now <= END){ const dd = now.getDate(); const i = DAYS.findIndex(x=>x.n===dd); if(i>=0) cur = i; }
+
+function renderDays(){
+  $("#days").innerHTML = DAYS.map((x,i)=>{
+    const isToday = now.getFullYear()===2026 && now.getMonth()===9 && now.getDate()===x.n;
+    return `<button type="button" aria-pressed="${i===cur}" data-i="${i}" class="${isToday?'today':''}"><small>${x.d}</small><strong>${x.n}.</strong></button>`;
+  }).join("");
+  const x = DAYS[cur];
+  $("#day").innerHTML = `
+    <div class="dayhead"><h3>Deň ${cur+1} · ${esc(x.title)}</h3><span class="chip ${x.chip.includes('Rezerv')||x.chip==='Odlet'?'m':''}">${esc(x.chip)}</span></div>
+    <p class="daynote">${esc(x.note)}</p>
+    ${x.alert?`<div class="alert">${x.alert}</div>`:""}
+    <ol class="tl">${x.items.map((it,j)=>{
+      const k = cur+"-"+j, on = !!done[k];
+      return `<li class="${on?'done':''}"><div class="row"><span class="time">${esc(it[0])}</span><div class="body"><div class="what">${esc(it[1])}</div>${it[2]?`<div class="det">${esc(it[2])}</div>`:""}${it[3]?`<div class="links"><a href="${nav(it[3])}" target="_blank" rel="noopener">Navigovať</a><a href="${gm(it[3])}" target="_blank" rel="noopener">Na mape</a></div>`:""}</div><input class="tick" type="checkbox" id="d${k}" data-k="${k}" ${on?'checked':''} aria-label="Hotovo: ${esc(it[1])}"></div></li>`;
+    }).join("")}</ol>
+    <div class="planb"><b>Plán B:</b> ${esc(x.planb)}</div>`;
+}
+$("#days").addEventListener("click", e=>{ const b = e.target.closest("button"); if(!b) return; cur = +b.dataset.i; store.set("day", cur); renderDays(); });
+$("#day").addEventListener("change", e=>{ const k = e.target.dataset.k; if(!k) return; done[k] = e.target.checked; store.set("done", done); e.target.closest("li").classList.toggle("done", e.target.checked); });
+renderDays();
+
+/* ---------- Stays ---------- */
+const bk = name => "https://www.booking.com/searchresults.html?ss=" + encodeURIComponent(name) + "&checkin=2026-10-11&checkout=2026-10-15&group_adults=2&group_children=2&no_rooms=1";
+const STAYS = [
+ { id:"azul", name:"Puerto Azul Suite Hotel", place:"Port de Pollença", type:"Suite hotel s raňajkami", price:[180,280],
+   pros:["~100 m od pláže","3 vonkajšie bazény, kids club","suity s terasou, raňajky v cene","pešo do centra Portu"],
+   cons:["bez kuchynky – večere vonku","koniec sezóny: overiť, či má v termíne otvorené"], map:"Puerto Azul Suite Hotel Port de Pollença", rec:"Odporúčam – najlepšia poloha pre Formentor, Boquer aj Tramuntanu." },
+ { id:"eix", name:"Eix Lagotel Holiday Resort", place:"Playa de Muro", type:"Resort s apartmánmi", price:[150,240],
+   pros:["apartmány až pre 5 osôb s kuchynkou","3 bazény vrátane splash parku","kids club","dlhá piesočná pláž cez cestu"],
+   cons:["resortový charakter, do mestečka autom","o 15 min ďalej od Formentoru"], map:"Eix Lagotel Holiday Resort Playa de Muro", rec:"Keď sú prioritou bazény a deti." },
+ { id:"villa", name:"Hoposa VillaConcha", place:"Port de Pollença", type:"Apartmány", price:[140,220],
+   pros:["apartmán pre 4 s kuchynkou","~200 m od pláže","splash park pre deti","možnosť raňajok na izbe"],
+   cons:["menej bazénov a vybavenia ako veľké resorty","menšie izby"], map:"Hoposa Villaconcha Port de Pollença", rec:"Najlepší pomer cena / poloha." }
+];
+let fav = store.get("fav", "azul");
+function renderStays(){
+  $("#stays").innerHTML = STAYS.map(s=>`
+   <article class="stay ${fav===s.id?'fav':''}">
+     <div class="dayhead"><h3>${esc(s.name)}</h3>${fav===s.id?'<span class="chip m">Favorit</span>':''}</div>
+     <div class="sub">${esc(s.place)} · ${esc(s.type)}</div>
+     <dl class="kv"><dt>Orient. cena</dt><dd>${s.price[0]}–${s.price[1]} € / noc</dd><dt>4 noci</dt><dd>${s.price[0]*4}–${s.price[1]*4} €</dd></dl>
+     <div class="pc"><div><h4>Plusy</h4><ul>${s.pros.map(p=>`<li>${esc(p)}</li>`).join("")}</ul></div><div><h4>Mínusy</h4><ul>${s.cons.map(p=>`<li>${esc(p)}</li>`).join("")}</ul></div></div>
+     <p style="margin:12px 0 0;font-size:15px"><b>${esc(s.rec)}</b></p>
+     <div class="actions">
+       <a class="btn solid" href="${bk(s.name)}" target="_blank" rel="noopener">Overiť cenu na Bookingu</a>
+       <a class="btn" href="${gm(s.map)}" target="_blank" rel="noopener">Na mape</a>
+       <button type="button" class="btn gold ${fav===s.id?'solid':''}" data-fav="${s.id}">${fav===s.id?'★ Vybrané':'☆ Vybrať'}</button>
+     </div>
+   </article>`).join("");
+}
+$("#stays").addEventListener("click", e=>{ const b = e.target.closest("[data-fav]"); if(!b) return; fav = b.dataset.fav; store.set("fav", fav); renderStays(); syncBudgetStay(true); });
+renderStays();
+
+/* ---------- Road ---------- */
+const fields = ["f-out","f-outno","f-back","f-backno"];
+fields.forEach(id=>{ const v = store.get(id, null); if(v!==null) document.getElementById(id).value = v; });
+const toMin = t => { const [h,m] = (t||"0:0").split(":").map(Number); return h*60+m; };
+const fmt = m => { m = ((m%1440)+1440)%1440; return String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0"); };
+function renderRoad(){
+  const out = toMin($("#f-out").value), back = toMin($("#f-back").value);
+  const atAirport = out - 120, leave = atAirport - 125;
+  const outNo = $("#f-outno").value.trim(), backNo = $("#f-backno").value.trim();
+  const steps = [
+    [fmt(leave),"Odchod z Trenčína","D1 Trenčín → Bratislava, cez Petržalku na A6 (Kittsee) a A4 k letisku. Cca 170 km, 1 h 50 min + rezerva 15 min. Rakúska diaľničná známka je potrebná (digitálna alebo nálepka).","Flughafen Wien-Schwechat"],
+    [fmt(atAirport-15),"Parkovanie pri letisku","Parkovanie rezervovať online vopred – je lacnejšie ako na mieste.","Flughafen Wien Parken"],
+    [fmt(atAirport),"Letisko Viedeň, check-in a bezpečnostná kontrola","2 h pred odletom. Doklady pre deti: vlastný platný OP alebo pas.",null],
+    [fmt(out),"Odlet do Palmy"+(outNo?" · "+outNo:""),"Let trvá cca 2 h 25 min.",null],
+    [fmt(out+145),"Pristátie v Palme","",null],
+    [fmt(out+200),"Auto prevzaté, odchod na sever","Kontrola auta pred odchodom (fotky škrabancov), detské sedačky.",null]
+  ];
+  const backSteps = [
+    [fmt(back-150),"Vrátenie auta na letisku PMI","Plná nádrž podľa podmienok, fotky stavu auta.","Palma de Mallorca Airport"],
+    [fmt(back-120),"Check-in a bezpečnostná kontrola","",null],
+    [fmt(back),"Odlet do Viedne"+(backNo?" · "+backNo:""),"",null],
+    [fmt(back+150),"Pristátie vo Viedni","",null],
+    [fmt(back+150+40),"Odchod z parkoviska","",null],
+    [fmt(back+150+40+115),"Doma v Trenčíne","",null]
+  ];
+  const li = s => `<li><div class="row"><span class="time">${s[0]}</span><div class="body"><div class="what">${esc(s[1])}</div>${s[2]?`<div class="det">${esc(s[2])}</div>`:""}${s[3]?`<div class="links"><a href="${nav(s[3])}" target="_blank" rel="noopener">Navigovať</a></div>`:""}</div></div></li>`;
+  $("#road-out").innerHTML = steps.map(li).join("");
+  $("#road-back").innerHTML = backSteps.map(li).join("");
+  const w = $("#roadwarn");
+  if (leave < toMin("06:00")){ w.hidden = false; w.innerHTML = `<b>Pozor:</b> pri tomto čase letu treba z Trenčína vyraziť už o ${fmt(leave)}, nie o 6:00.`; }
+  else { w.hidden = true; }
+}
+fields.forEach(id=>document.getElementById(id).addEventListener("input", e=>{ store.set(id, e.target.value); renderRoad(); }));
+renderRoad();
+
+/* ---------- Packing ---------- */
+const PACK = {
+ "Doklady a peniaze":["OP / pasy pre všetkých 4 (aj deti)","Európske preukazy poistenca (EHIC)","Cestovné poistenie","Vodičský preukaz + kreditná karta na meno vodiča (kaucia za auto)","Potvrdenia: letenky, ubytovanie, auto, parkovanie","Lístky Coves del Drach (online)","Rakúska diaľničná známka"],
+ "Oblečenie":["Plavky 2× na osobu","Ľahká bunda / mikina na večer","Pevná obuv na Boquer a Torrent de Pareis","Sandále / obuv do vody (kamienkové pláže)","Oblečenie so zakrytými plecami a kolenami (katedrála)","Pokrývky hlavy"],
+ "Deti":["Tabletky / náramky proti nevoľnosti (serpentíny)","Detské sedačky – alebo objednať k autu","Tablet, slúchadlá, hry na let","Desiata a pitie na ranný presun","Plávacie rukávniky / okuliare"],
+ "Lekárnička a hygiena":["Opaľovací krém SPF 50 + po opaľovaní","Lieky na horúčku a bolesť (aj detské)","Náplasti, dezinfekcia","Repelent","Osobné lieky"],
+ "Technika":["Nabíjačky + powerbanka","Držiak mobilu do auta","Offline mapa Mallorky v Google Maps","Fotoaparát"],
+ "Pred odchodom":["Online check-in na lety","Skontrolovať tlak v pneumatikách auta na cestu do Viedne","Vyniesť smeti, zalievanie kvetov","Stiahnuť offline mapy"]
+};
+const packed = store.get("packed", {});
+const extra = store.get("extra", {});
+function renderPack(){
+  let total = 0, n = 0;
+  $("#pack").innerHTML = Object.keys(PACK).map((g,gi)=>{
+    const items = PACK[g].concat(extra[g]||[]);
+    const c = items.filter((_,i)=>packed[gi+"-"+i]).length; total += items.length; n += c;
+    return `<div class="group"><h3>${esc(g)} <small>${c}/${items.length}</small></h3>
+      <ul class="checks">${items.map((it,i)=>{const k=gi+"-"+i;return `<li><label for="pk${k}"><input type="checkbox" id="pk${k}" data-pk="${k}" ${packed[k]?'checked':''}><span>${esc(it)}</span></label></li>`;}).join("")}</ul>
+      <form class="addrow" data-g="${esc(g)}"><input id="add${gi}" type="text" placeholder="Pridať položku…" aria-label="Pridať položku do ${esc(g)}"><button class="btn" type="submit">Pridať</button></form></div>`;
+  }).join("");
+  $("#packbar").style.width = (total? n/total*100 : 0) + "%";
+}
+$("#pack").addEventListener("change", e=>{ const k = e.target.dataset.pk; if(!k) return; packed[k] = e.target.checked; store.set("packed", packed); renderPack(); });
+$("#pack").addEventListener("submit", e=>{ e.preventDefault(); const f = e.target, g = f.dataset.g, v = f.querySelector("input").value.trim(); if(!v) return; (extra[g] = extra[g]||[]).push(v); store.set("extra", extra); renderPack(); });
+renderPack();
+
+/* ---------- Budget ---------- */
+const BUD = [
+ ["car","Prenájom auta 5 dní","s plným poistením, odhad",230],
+ ["seats","Detské sedačky 2×","ak ich nemáte vlastné",60],
+ ["fuel","Palivo na Mallorke","cca 450 km",60],
+ ["home","Palivo + diaľnica Trenčín – Viedeň a späť","vrátane rakúskej známky",70],
+ ["park","Parkovanie pri letisku Viedeň","5 dní, rezervované online",90],
+ ["drach","Coves del Drach","2 × 18,50 € + 2 × 11,50 €",60],
+ ["seu","Katedrála La Seu","2 dospelí, deti podľa veku",25],
+ ["tram","Električka Sóller – Port a späť","4 osoby",40],
+ ["parking","Parkovanie na výletoch","Formentor, Sa Calobra, Palma",40],
+ ["food","Jedlo a pitie","5 dní × cca 130 € pre 4 osoby",650],
+ ["misc","Rezerva","zmrzlina, suveníry, nečakané",100]
+];
+const bv = store.get("budget", {});
+$("#b-stay").innerHTML = STAYS.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join("");
+function syncBudgetStay(fromFav){
+  const sel = $("#b-stay");
+  if (fromFav) sel.value = fav; else sel.value = store.get("bstay", fav);
+  const s = STAYS.find(x=>x.id===sel.value);
+  const saved = store.get("bnight_"+s.id, null);
+  $("#b-night").value = saved!==null ? saved : Math.round((s.price[0]+s.price[1])/2/5)*5;
+  calc();
+}
+function renderBudget(){
+  $("#budget").innerHTML = BUD.map(b=>`<div class="brow"><label for="b-${b[0]}">${esc(b[1])}<small>${esc(b[2])}</small></label><input id="b-${b[0]}" type="number" min="0" step="5" data-b="${b[0]}" value="${bv[b[0]]!==undefined?bv[b[0]]:b[3]}"></div>`).join("");
+}
+function calc(){
+  let t = (+$("#b-night").value||0)*4;
+  BUD.forEach(b=>{ t += +document.getElementById("b-"+b[0]).value || 0; });
+  $("#btotal").textContent = t.toLocaleString("sk-SK") + " €";
+}
+$("#budget").addEventListener("input", e=>{ const k = e.target.dataset.b; if(!k) return; bv[k] = e.target.value; store.set("budget", bv); calc(); });
+$("#b-stay").addEventListener("change", e=>{ store.set("bstay", e.target.value); fav = e.target.value; store.set("fav", fav); renderStays(); syncBudgetStay(true); });
+$("#b-night").addEventListener("input", e=>{ store.set("bnight_"+$("#b-stay").value, e.target.value); calc(); });
+renderBudget(); syncBudgetStay(false);
+
+/* ---------- Tips ---------- */
+const TIPS = [
+ ["Tiesňová linka","<b class='copy'>112</b> – funguje v celej EÚ, hovoria aj po anglicky."],
+ ["Formentor do 18. 10.","Súkromné autá k majáku len pred 10:00 alebo po 22:00. Inak kyvadlový bus z Port de Pollença."],
+ ["Auto","Pri prevzatí nafotiť auto zo všetkých strán. Pravidlo paliva „full to full“ je najvýhodnejšie. Kaucia sa blokuje na kreditnej karte vodiča."],
+ ["Serpentíny","Ma-10 a cesta do Sa Calobra sú úzke a kľukaté, chodia nimi autobusy a cyklisti. Deťom dať lieky proti nevoľnosti 30 min pred jazdou."],
+ ["Obedy a večere","Španieli obedujú 13:00–15:30, večerajú od 20:00. S deťmi pomôže „menú del día“ cez obed – lacnejšie a rýchle."],
+ ["Pitná voda","Voda z vodovodu je bezpečná, ale chuťovo slabšia – väčšina ľudí kupuje balenú (5 l bandasky v supermarkete)."],
+ ["Slnko v októbri","Stále silné UV. Krém aj na krátke výlety, hlavne pre deti na lodi a pri vode."],
+ ["Sviatok 12. 10.","Fiesta Nacional de España – niektoré obchody zatvorené. Nákup urobiť v nedeľu večer alebo v utorok."],
+ ["Aplikácie","Google Maps (offline mapa), Booking, aplikácia požičovne áut, TIB – autobusy na Mallorke."]
+];
+$("#tips").innerHTML = TIPS.map(t=>`<div class="tip"><h3>${esc(t[0])}</h3><p>${t[1]}</p></div>`).join("");
+
+/* ---------- Tabs ---------- */
+const tabs = document.querySelectorAll("nav.tabs button");
+function show(id){
+  tabs.forEach(b=>b.setAttribute("aria-selected", b.dataset.tab===id));
+  document.querySelectorAll("section.panel").forEach(p=>p.hidden = p.id!=="p-"+id);
+  store.set("tab", id);
+}
+tabs.forEach(b=>b.addEventListener("click", ()=>{ show(b.dataset.tab); window.scrollTo({top:0}); }));
+const h = (location.hash||"").slice(1);
+show(["plan","stay","road","pack","money","tips"].includes(h) ? h : store.get("tab","plan"));
+})();
+</script>
+
+</body></html>
